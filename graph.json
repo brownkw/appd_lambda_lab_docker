@@ -1,0 +1,138 @@
+{
+    "core-services": {
+        "tier_type": "java",
+        "paths": {
+            "/api/login": {
+                "actions": [
+                    {
+                        "name": "login-services",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "https://www.google.com"
+                        }
+                    },
+                    {
+                        "name": "mongo-sessions",
+                        "type": "MongoAction",
+                        "properties": {
+                            "action": "Insert",
+                            "connectionString": "mongo-sessions:27017",
+                            "database": "sessions",
+                            "collection": "sessions"
+                        }
+                    }
+                ]
+            },
+            "/api/search": {
+                "actions": [
+                    {
+                        "name": "core-services-search",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "https://www.appdynamics.com"
+                        }
+                    },
+                    {
+                        "name": "search-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 2,
+                            "load": 0.4,
+                            "canSpike": true,
+                            "pctSlowTxns": 0.25,
+                            "spikeMultiplier": 10
+                        }
+                    }
+                ]
+            },
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "web-api": {
+        "tier_type" : "node",
+        "paths" : {
+            "/api/login": {
+                "actions": [
+                    {
+                        "name": "core-services-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://core-services:8080/api/login"
+                        }
+                    },
+                    {
+                        "name": "mongo-accounts",
+                        "type": "MongoAction",
+                        "properties": {
+                            "action": "Insert",
+                            "connectionString": "mongo-accounts:27017",
+                            "database": "accounts",
+                            "collection": "accounts"
+                        }
+                    }
+                ]
+            },
+            "/api/search": {
+                "actions": [
+                    {
+                        "name": "core-services-search",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "https://www.appdynamics.com"
+                        }
+                    },
+                    {
+                        "name": "search-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 2,
+                            "load": 0.4,
+                            "canSpike": true,
+                            "pctSlowTxns": 0.25,
+                            "spikeMultiplier": 10
+                        }
+                    }
+                ]
+            },
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

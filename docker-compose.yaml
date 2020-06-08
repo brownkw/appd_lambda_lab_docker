@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  mongo-sessions:
+    image: mongo
+    container_name: mongo-sessions
+    hostname: mongo-sessions
+    expose: 
+      - 27017
+  mongo-accounts:
+    image: mongo
+    container_name: mongo-accounts
+    hostname: mongo-accounts
+    expose: 
+      - 27017
+  web-api:
+    image: appd_lambda_lab_nodejs_services:latest
+    hostname: web-api
+    container_name: web-api
+    volumes:
+      - './graph.json:/graph.json'
+    environment: 
+      - GRAPH_FILE=/graph.json
+      - DEBUG_LEVEL=debug
+    ports:
+      - '3000:3000'
+  core-services:
+    image: appd_lambda_lab_java_services:latest
+    hostname: core-services
+    container_name: core-services
+    volumes:
+      - './graph.json:/graph.json'
+    environment: 
+      - GRAPH_FILE=/graph.json
+    ports:
+      - '8080:8080'
