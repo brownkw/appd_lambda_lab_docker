@@ -2,6 +2,12 @@
  * Module dependencies.
  */
 
+ // If AppD environment variables are set, start profiling.
+if (appdEnvVarsSet()) {
+  require("appdynamics").profile();
+}
+
+
 var app = require('./app');
 var debug = require('debug')('nodejs-services:server');
 var http = require('http');
@@ -85,4 +91,15 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+}
+
+function appdEnvVarsSet() {
+  return (process.env.APPDYNAMICS_CONTROLLER_HOST_NAME &&
+  process.env.APPDYNAMICS_CONTROLLER_PORT &&
+  process.env.APPDYNAMICS_AGENT_APPLICATION_NAME && 
+  process.env.APPDYNAMICS_AGENT_TIER_NAME &&
+  process.env.APPDYNAMICS_AGENT_ACCOUNT_NAME &&
+  process.env.APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY && 
+  process.env.APPDYNAMICS_AGENT_TIER_NAME && 
+  process.env.APPDYNAMICS_AGENT_NODE_NAME);
 }

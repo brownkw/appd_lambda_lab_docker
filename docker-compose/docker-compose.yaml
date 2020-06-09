@@ -1,6 +1,9 @@
 version: '2'
 
 services:
+  # java-agent:
+  #   image: appdynamics/java-agent:20.5.0
+
   mongo-sessions:
     image: mongo
     container_name: mongo-sessions
@@ -22,6 +25,8 @@ services:
     environment: 
       - GRAPH_FILE=/graph.json
       - DEBUG_LEVEL=debug
+      - APPDYNAMICS_AGENT_ACCOUNT_NAME=${APPDYNAMICS_AGENT_ACCOUNT_NAME}
+      - APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}
     ports:
       - '3000:3000'
   core-services:
@@ -32,5 +37,17 @@ services:
       - './graph.json:/graph.json'
     environment: 
       - GRAPH_FILE=/graph.json
+      - APPDYNAMICS_AGENT_ACCOUNT_NAME=${APPDYNAMICS_AGENT_ACCOUNT_NAME}  
+      - APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}
     ports:
       - '8080:8080'
+  load:
+    container_name: load
+    build: 
+      context: ./load_container
+    volumes:
+      - './load.sh:/load.sh'
+
+
+# volumes:
+#   java-agent:
