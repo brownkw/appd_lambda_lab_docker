@@ -96,8 +96,7 @@ function onListening() {
 function appdEnvVarsSet() {
   return (process.env.APPDYNAMICS_CONTROLLER_HOST_NAME &&
   process.env.APPDYNAMICS_CONTROLLER_PORT &&
-  process.env.APPDYNAMICS_AGENT_APPLICATION_NAME && 
-  process.env.APPDYNAMICS_AGENT_TIER_NAME &&
+  process.env.APPDYNAMICS_AGENT_APPLICATION_NAME &&   
   process.env.APPDYNAMICS_AGENT_ACCOUNT_NAME &&
   process.env.APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY && 
   process.env.APPDYNAMICS_AGENT_TIER_NAME && 
