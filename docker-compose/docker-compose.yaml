@@ -63,6 +63,7 @@ services:
     volumes:
       - './graph.json:/graph.json'
       - java-agent:/opt/appdynamics/java-agent/
+    env_file: controller.env
     environment: 
       - GRAPH_FILE=/graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
