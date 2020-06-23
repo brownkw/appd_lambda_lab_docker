@@ -12,7 +12,7 @@ services:
   machine-agent:
     container_name: machine-agent
     hostname: machine-agent
-    image: appdynamics/machine-agent-analytics:latest
+    image: appdynamics/machine-agent-analytics:latest    
     restart: always
     env_file: controller.env
     environment:
@@ -20,6 +20,7 @@ services:
       - APPDYNAMICS_DOCKER_ENABLED=true
       - APPDYNAMICS_AGENT_ACCOUNT_NAME=${APPDYNAMICS_AGENT_ACCOUNT_NAME}
       - APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}
+      - APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${APPDYNAMICS_AGENT_UNIQUE_HOST_ID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
