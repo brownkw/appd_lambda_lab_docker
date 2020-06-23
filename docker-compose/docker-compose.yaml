@@ -73,8 +73,8 @@ services:
       - APPDYNAMICS_AGENT_NODE_NAME=core-services-1
       - APPDYNAMICS_AGENT_ACCOUNT_NAME=${APPDYNAMICS_AGENT_ACCOUNT_NAME}  
       - APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}
-    ports:
-      - '8080:8080'
+    expose:
+      - 8080
 
   # load:
   #   container_name: load
