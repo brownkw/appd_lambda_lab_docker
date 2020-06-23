@@ -40,7 +40,7 @@ services:
       - 27017
 
   web-api:
-    image: brownkw/appd_lambda_lab_nodejs_services:latest
+    image: brownkw/appd_lambda_lab_nodejs_services:v1
     hostname: web-api
     container_name: web-api
     volumes:
@@ -57,7 +57,7 @@ services:
       - '3000:3000'
 
   core-services:
-    image: brownkw/appd_lambda_lab_java_services:latest
+    image: brownkw/appd_lambda_lab_java_services:v1
     hostname: core-services
     container_name: core-services
     volumes:
