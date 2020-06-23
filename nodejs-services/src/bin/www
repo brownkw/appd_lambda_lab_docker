@@ -4,10 +4,20 @@
  * Module dependencies.
  */
 
- // If AppD environment variables are set, start profiling.
- if (appdEnvVarsSet()) {
+// If AppD environment variables are set, start profiling.
+if (appdEnvVarsSet()) {
   console.log("Starting AppDynamics...");
-  require("appdynamics").profile();
+  require("appdynamics").profile({
+    controllerHostName: process.env.APPDYNAMICS_CONTROLLER_HOST_NAME,
+    controllerPort: process.env.APPDYNAMICS_CONTROLLER_PORT,
+    controllerSslEnabled: process.env.APPDYNAMICS_CONTROLLER_SSL_ENABLED,  // Set to true if controllerPort is SSL
+    accountName: process.env.APPDYNAMICS_AGENT_ACCOUNT_NAME,
+    accountAccessKey: process.env.APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY, //required
+    applicationName: process.env.APPDYNAMICS_AGENT_APPLICATION_NAME,
+    tierName: process.env.APPDYNAMICS_AGENT_TIER_NAME,
+    reuseNode: 'true',
+    reuseNodePrefix: process.env.APPDYNAMICS_AGENT_NODE_NAME
+  });
 }
 
 
@@ -98,10 +108,10 @@ function onListening() {
 
 function appdEnvVarsSet() {
   return (process.env.APPDYNAMICS_CONTROLLER_HOST_NAME &&
-  process.env.APPDYNAMICS_CONTROLLER_PORT &&
-  process.env.APPDYNAMICS_AGENT_APPLICATION_NAME &&   
-  process.env.APPDYNAMICS_AGENT_ACCOUNT_NAME &&
-  process.env.APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY && 
-  process.env.APPDYNAMICS_AGENT_TIER_NAME && 
-  process.env.APPDYNAMICS_AGENT_NODE_NAME);
+    process.env.APPDYNAMICS_CONTROLLER_PORT &&
+    process.env.APPDYNAMICS_AGENT_APPLICATION_NAME &&
+    process.env.APPDYNAMICS_AGENT_ACCOUNT_NAME &&
+    process.env.APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY &&
+    process.env.APPDYNAMICS_AGENT_TIER_NAME &&
+    process.env.APPDYNAMICS_AGENT_NODE_NAME);
 }
