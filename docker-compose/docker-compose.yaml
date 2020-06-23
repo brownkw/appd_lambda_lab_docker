@@ -40,7 +40,7 @@ services:
       - 27017
 
   web-api:
-    image: appd_lambda_lab_nodejs_services:latest
+    image: brownkw/appd_lambda_lab_nodejs_services:latest
     hostname: web-api
     container_name: web-api
     volumes:
@@ -57,7 +57,7 @@ services:
       - '3000:3000'
 
   core-services:
-    image: appd_lambda_lab_java_services:latest
+    image: brownkw/appd_lambda_lab_java_services:latest
     hostname: core-services
     container_name: core-services
     volumes:
@@ -71,7 +71,7 @@ services:
       - APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}
     ports:
       - '8080:8080'
-      
+
   # load:
   #   container_name: load
   #   build: 
