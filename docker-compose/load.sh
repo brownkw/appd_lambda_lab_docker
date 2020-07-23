@@ -2,7 +2,7 @@
 
 while true
 do
-    url_start=("http://localhost:3000/api/login" "http://web-api:3000/api/account")
+    url_start=("http://localhost:3000/api/login" "http://localhost:3000/api/account")
 
     job_seeker_urls=("http://localhost:3000/api/search" "http://localhost:3000/api/submitCandidate")
     job_poster_urls="http://localhost:3000/api/addJob"
@@ -32,7 +32,7 @@ do
 
     for url in ${urls[@]}
     do        
-        echo "$(curl ${url})"
+        echo "$(curl -s ${url})"
         sleep 1
     done    
 done
