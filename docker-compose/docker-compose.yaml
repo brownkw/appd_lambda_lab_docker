@@ -59,7 +59,7 @@ services:
       - APPDYNAMICS_AGENT_ACCOUNT_NAME=${APPDYNAMICS_AGENT_ACCOUNT_NAME}
       - APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}
     ports:
-      - '3000:3000'
+      - '8080:8080'
 
   auth-services:
     image: brownkw/appd_lambda_lab_nodejs_services:v1
