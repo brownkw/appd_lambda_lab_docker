@@ -59,6 +59,23 @@ services:
     ports:
       - '3000:3000'
 
+  auth-services:
+    image: brownkw/appd_lambda_lab_nodejs_services:v1
+    hostname: auth-services
+    container_name: auth-services
+    volumes:
+      - './graph.json:/graph.json'
+    env_file: controller.env
+    environment: 
+      - GRAPH_FILE=/graph.json
+      - DEBUG_LEVEL=debug      
+      - APPDYNAMICS_AGENT_TIER_NAME=auth-services
+      - APPDYNAMICS_AGENT_NODE_NAME=auth-services-1
+      - APPDYNAMICS_AGENT_ACCOUNT_NAME=${APPDYNAMICS_AGENT_ACCOUNT_NAME}
+      - APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}
+    expose:
+      - 3000
+
   core-services:
     image: brownkw/appd_lambda_lab_java_services:v1
     hostname: core-services

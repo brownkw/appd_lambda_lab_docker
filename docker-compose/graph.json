@@ -1,15 +1,18 @@
 {
-    "core-services": {
-        "tier_type": "java",
+    "auth-services": {
+        "tier_type" : "node",
         "paths": {
             "/api/login": {
                 "actions": [
                     {
-                        "name": "login-services",
-                        "type": "HttpAction",
+                        "name": "login-processing",
+                        "type": "ProcessingAction",
                         "properties": {
-                            "requestMethod": "GET",
-                            "url": "https://www.google.com"
+                            "minDuration": 150,
+                            "maxDuration": 400,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
                         }
                     },
                     {
@@ -22,6 +25,38 @@
                             "collection": "sessions"
                         }
                     }
+                ]
+            },
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "core-services": {
+        "tier_type": "java",
+        "paths": {
+            "/api/login": {
+                "actions": [
+                    {
+                        "name": "login-services",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "https://auth-services:3000/api/login"
+                        }
+                    }                    
                 ]
             },
             "/api/search": {
