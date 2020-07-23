@@ -10,23 +10,39 @@ do
     urls=("${url_start[@]}")
 
     # Randomly toggle between a job searcher and a job poster
-    rnd=$(((RANDOM % 3)+ 1))   
-    i=1  
-    if [ $((rnd)) -gt 1 ]; then
-        num_times=$(((RANDOM % 5)+ 1))        
-        while [ $i -le $num_times ]
-        do
-            urls+=("${job_seeker_urls[@]}")
-            i=$((i+1))
-        done        
-    else
-        num_times2=$(((RANDOM % 5)+ 1))        
-        while [ $i -le $num_times2 ]
-        do
-            urls+=("$job_poster_urls")
-            i=$((i+1))
-        done
-    fi
+    # rnd=$(((RANDOM % 3)+ 1))   
+    # i=1  
+    # if [ $((rnd)) -gt 1 ]; then
+    #     num_times=$(((RANDOM % 5)+ 1))        
+    #     while [ $i -le $num_times ]
+    #     do
+    #         urls+=("${job_seeker_urls[@]}")
+    #         i=$((i+1))
+    #     done        
+    # else
+    #     num_times2=$(((RANDOM % 5)+ 1))        
+    #     while [ $i -le $num_times2 ]
+    #     do
+    #         urls+=("$job_poster_urls")
+    #         i=$((i+1))
+    #     done
+    # fi
+
+    i=1
+    num_times=$(((RANDOM % 5)+ 1))
+    while [ $i -le $num_times ]
+    do
+        urls+=("${job_seeker_urls[@]}")
+        i=$((i+1))
+    done 
+
+    i=1
+    num_times=$(((RANDOM % 5)+ 1))
+    while [ $i -le $num_times ]
+    do
+        urls+=("$job_poster_urls")
+        i=$((i+1))
+    done
 
     urls+=("http://localhost:3000/api/logout")
 
