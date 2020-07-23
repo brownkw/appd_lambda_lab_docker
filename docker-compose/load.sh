@@ -32,7 +32,7 @@ do
 
     for url in ${urls[@]}
     do        
-        echo "curl ${url}"
+        echo "$(curl ${url})"
         sleep 1
     done    
 done
