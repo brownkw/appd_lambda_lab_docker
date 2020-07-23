@@ -43,14 +43,16 @@ services:
       - 27017
 
   web-api:
-    image: brownkw/appd_lambda_lab_nodejs_services:v1
+    image: brownkw/appd_lambda_lab_java_services:v1
     hostname: web-api
     container_name: web-api
     volumes:
       - './graph.json:/graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
     env_file: controller.env
     environment: 
       - GRAPH_FILE=/graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
       - DEBUG_LEVEL=debug      
       - APPDYNAMICS_AGENT_TIER_NAME=web-api
       - APPDYNAMICS_AGENT_NODE_NAME=web-api-1
