@@ -14,14 +14,14 @@ do
     i=1  
     if [ $((rnd)) -gt 1 ]; then
         num_times=$(((RANDOM % 5)+ 1))        
-        while [ $i -lt $num_times ]
+        while [ $i -le $num_times ]
         do
             urls+=("${job_seeker_urls[@]}")
             i=$((i+1))
         done        
     else
         num_times2=$(((RANDOM % 5)+ 1))        
-        while [ $i -lt $num_times2 ]
+        while [ $i -le $num_times2 ]
         do
             urls+=("$job_poster_urls")
             i=$((i+1))
