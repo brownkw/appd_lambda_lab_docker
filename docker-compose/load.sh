@@ -4,7 +4,7 @@ while true
 do
     url_start=("http://localhost:8080/api/login" "http://localhost:8080/api/account")
 
-    job_seeker_urls=("http://localhost:8080/api/search" "http://localhost:8080/api/submitCandidate")
+    job_seeker_urls=("http://localhost:8080/api/search" "http://localhost:8080/api/getJob" "http://localhost:8080/api/submitCandidate")
     job_poster_urls="http://localhost:8080/api/addJob"
 
     urls=("${url_start[@]}")
