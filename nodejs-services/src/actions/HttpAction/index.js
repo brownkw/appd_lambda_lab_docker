@@ -7,17 +7,26 @@ class HttpAction extends Action {
         this.type = "HttpAction";
     }
 
-    execute() {        
+    async execute() {        
         var h = this;
         h.logger.log('info', 'Executing ' + h.type);
-        request({
-            uri: h.props.url,
-            method: h.props.requestMethod
-        }).then(function(body) {
-            h.logger.log('debug', body);
-        }).catch(function(err) {
-            h.logger.log('error', err); 
-        });
+        try {
+            var resp = await request({
+                uri: h.props.url,
+                method: h.props.requestMethod
+            });
+            h.logger.log('debug', resp);
+        } catch (e) {
+            h.logger.log('error', e);
+        }
+        // request({
+        //     uri: h.props.url,
+        //     method: h.props.requestMethod
+        // }).then(function(body) {
+        //     h.logger.log('debug', body);
+        // }).catch(function(err) {
+        //     h.logger.log('error', err); 
+        // });
         // request({
         //     uri: h.props.url,
         //     method: h.props.requestMethod

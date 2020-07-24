@@ -8,7 +8,7 @@ class ProcessingAction extends Action {
         this.type = "ProcessingAction";
     }
 
-    execute() {
+    async execute() {
         this.logger.log('info', 'Executing ' + this.type);
 
         var should_run = true;

@@ -8,26 +8,46 @@ class MongoAction extends Action {
         this.type = "MongoAction";
     }
 
-    execute() {
+    async execute() {
         var m = this;
         m.logger.log('info', "Executing " + m.type);
 
-        MongoClient.connect("mongodb://" + m.props.connectionString).then(function(conn) {
-            const db = conn.db(m.props.database);
-            if (m.props.action.toUpperCase() === "INSERT") {
-                m.logger.log('info', 'Inserting document');
+        try {
+            var conn = await MongoClient.connect("mongodb://" + m.props.connectionString);
+            var db = conn.db(m.props.database);
+            if (m.props.action.toUpperCase() == "INSERT") {
+                m.logger.log('info', 'Inserting document...');
                 var doc = faker.helpers.userCard();
-                db.collection(m.props.collection).insertOne(doc).then(function(r) {
+                try {
+                    var r = db.collection(m.props.collection).insertOne(doc);
                     m.logger.log('debug', JSON.stringify(r));
-                    conn.close();
-                }).catch(function(err) {
-                    m.logger.log('error', JSON.stringify(err));
-                    conn.close();
-                });
+                } catch (e) {
+                    m.logger.log('error', JSON.stringify(e));
+                }
             }
-        }).catch(function(err) {
-            m.logger.log('error', err);
-        });       
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (e) {
+            m.logger.log('error', e);
+        }
+
+        // MongoClient.connect("mongodb://" + m.props.connectionString).then(function(conn) {
+        //     const db = conn.db(m.props.database);
+        //     if (m.props.action.toUpperCase() === "INSERT") {
+        //         m.logger.log('info', 'Inserting document');
+        //         var doc = faker.helpers.userCard();
+        //         db.collection(m.props.collection).insertOne(doc).then(function(r) {
+        //             m.logger.log('debug', JSON.stringify(r));
+        //             conn.close();
+        //         }).catch(function(err) {
+        //             m.logger.log('error', JSON.stringify(err));
+        //             conn.close();
+        //         });
+        //     }
+        // }).catch(function(err) {
+        //     m.logger.log('error', err);
+        // });       
 
     }
 }
