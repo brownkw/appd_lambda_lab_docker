@@ -12,8 +12,9 @@ class MongoAction extends Action {
         var m = this;
         m.logger.log('info', "Executing " + m.type);
 
+        var conn; 
         try {
-            var conn = await MongoClient.connect("mongodb://" + m.props.connectionString);
+            conn = await MongoClient.connect("mongodb://" + m.props.connectionString);
             var db = conn.db(m.props.database);
             if (m.props.action.toUpperCase() == "INSERT") {
                 m.logger.log('info', 'Inserting document...');
@@ -28,7 +29,10 @@ class MongoAction extends Action {
             if (conn != null) {
                 conn.close();
             }
-        } catch (e) {
+        } catch (e) {  
+            if (conn != null) {
+                conn.close();
+            }          
             m.logger.log('error', e);
         }
 

@@ -1,5 +1,6 @@
 const Action = require('../action');
 const _ = require('lodash');
+const util = require('util');
 
 class ProcessingAction extends Action {
 
@@ -19,25 +20,9 @@ class ProcessingAction extends Action {
                 this.logger.log('info', 'Spiking processing');
                 duration = Math.round(duration * this.props.spikeMultiplier);
             }
-        }        
+        }                
 
-        var start = function () {
-            should_run = true;
-            blockCpuFor(duration);
-            setTimeout(start, 1000 * (1 - load));
-        }
-
-        var blockCpuFor = function (ms) {
-            var now = new Date().getTime();
-            var result = 0
-            while (should_run) {
-                result += Math.random() * Math.random();
-                if (new Date().getTime() > now + ms)
-                    return;
-            }
-        }
-
-        start();
+        await new Promise(resolve => setTimeout(resolve, duration));
     }
 
 }
