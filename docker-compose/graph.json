@@ -16,13 +16,11 @@
                         }
                     },
                     {
-                        "name": "mongo-sessions",
-                        "type": "MongoAction",
+                        "name": "data-services",
+                        "type": "HttpAction",
                         "properties": {
-                            "action": "Insert",
-                            "connectionString": "mongo-sessions:27017",
-                            "database": "sessions",
-                            "collection": "sessions"
+                            "requestMethod": "GET",
+                            "url": "http://data-services:3000/api/login"
                         }
                     }
                 ]
@@ -38,6 +36,151 @@
                             "numCores": 2,
                             "numThreadsPerCore": 3,
                             "load": 0.2
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "data-services": {
+        "tier_type" : "node",
+        "paths": {
+            "/api/login": {
+                "actions": [
+                    {
+                        "name": "mongo-sessions",
+                        "type": "MongoAction",
+                        "properties": {
+                            "action": "Insert",
+                            "connectionString": "mongo-sessions:27017",
+                            "database": "sessions",
+                            "collection": "sessions"
+                        }
+                    },
+                    {
+                        "name": "mongo-accounts",
+                        "type": "MongoAction",
+                        "properties": {
+                            "action": "Insert",
+                            "connectionString": "mongo-accounts:27017",
+                            "database": "accounts",
+                            "collection": "accounts"
+                        }
+                    }
+                ]
+            },
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }            
+        }
+    },
+    "candidate-services": {
+        "tier_type" : "java",
+        "paths": {
+            "/api/search": {
+                "actions": [
+                    {
+                        "name": "lambda-person-search",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "##NODEJS_LAMBDA_URL##/person/random"
+                        }
+                    }
+                ]
+            },
+            "/api/submitCandidate": {
+                "actions": [
+                    {
+                        "name": "lambda-submit-candidate",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "##NODEJS_LAMBDA_URL##/person/submit"
+                        }
+                    }
+                ]
+            },
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "job-listing-services": {
+        "tier_type" : "java",
+        "paths" : {
+            "/api/addJob": {
+                "actions": [
+                    {
+                        "name": "lambda-add-job",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "##JAVA_LAMBDA_URL##/orders/submit"
+                        }
+                    },
+                    {
+                        "name": "add-job-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 2,
+                            "load": 0.4,
+                            "canSpike": true,
+                            "pctSlowTxns": 0.25,
+                            "spikeMultiplier": 10
+                        }
+                    }
+                ]
+            },
+            "/api/getJob": {
+                "actions": [
+                    {
+                        "name": "lambda-add-job",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "##JAVA_LAMBDA_URL##/orders/random"
+                        }
+                    },
+                    {
+                        "name": "add-job-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 2,
+                            "load": 0.4,
+                            "canSpike": true,
+                            "pctSlowTxns": 0.25,
+                            "spikeMultiplier": 10
                         }
                     }
                 ]
@@ -60,15 +203,15 @@
                 ]
             },
             "/api/search": {
-                "actions": [
+                "actions": [  
                     {
-                        "name": "lambda-person-search",
+                        "name": "candidate-services-search",
                         "type": "HttpAction",
                         "properties": {
                             "requestMethod": "GET",
-                            "url": "##NODEJS_LAMBDA_URL##/person/random"
+                            "url": "http://candidate-services:8080/api/search"
                         }
-                    },
+                    },                  
                     {
                         "name": "search-processing",
                         "type": "ProcessingAction",
@@ -138,15 +281,15 @@
                 ]
             },
             "/api/submitCandidate": {
-                "actions": [
+                "actions": [     
                     {
-                        "name": "lambda-submit-candidate",
+                        "name": "candidate-services-submit",
                         "type": "HttpAction",
                         "properties": {
                             "requestMethod": "GET",
-                            "url": "##NODEJS_LAMBDA_URL##/person/submit"
+                            "url": "http://candidate-services:8080/api/submitCandidate"
                         }
-                    },
+                    },               
                     {
                         "name": "submit-candidate-processing",
                         "type": "ProcessingAction",
@@ -191,16 +334,6 @@
                         "properties": {
                             "requestMethod": "GET",
                             "url": "http://core-services:8080/api/login"
-                        }
-                    },
-                    {
-                        "name": "mongo-accounts",
-                        "type": "MongoAction",
-                        "properties": {
-                            "action": "Insert",
-                            "connectionString": "mongo-accounts:27017",
-                            "database": "accounts",
-                            "collection": "accounts"
                         }
                     }
                 ]
