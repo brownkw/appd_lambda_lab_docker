@@ -98,6 +98,14 @@
                             "requestMethod": "GET",
                             "url": "##NODEJS_LAMBDA_URL##/person/random"
                         }
+                    },
+                    {
+                        "name" : "lambda-resume-search",
+                        "type" : "HttpAction",
+                        "properties" : {
+                            "requestMethod": "GET",
+                            "url": "##PYTHON_LAMBDA_URL##/resume/random"
+                        }
                     }
                 ]
             },
@@ -110,7 +118,15 @@
                             "requestMethod": "GET",
                             "url": "##NODEJS_LAMBDA_URL##/person/submit"
                         }
-                    }
+                    },
+                    {
+                        "name": "lambda-submit-resume",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "##PYTHON_LAMBDA_URL##/resume/upload"
+                        }
+                    }                    
                 ]
             },
             "*": {
@@ -235,23 +251,9 @@
                         "type": "HttpAction",
                         "properties": {
                             "requestMethod": "GET",
-                            "url": "##JAVA_LAMBDA_URL##/orders/submit"
+                            "url": "http://job-listing-services:8080/api/addJob"
                         }
-                    },
-                    {
-                        "name": "add-job-processing",
-                        "type": "ProcessingAction",
-                        "properties": {
-                            "minDuration": 150,
-                            "maxDuration": 500,
-                            "numCores": 2,
-                            "numThreadsPerCore": 2,
-                            "load": 0.4,
-                            "canSpike": true,
-                            "pctSlowTxns": 0.25,
-                            "spikeMultiplier": 10
-                        }
-                    }
+                    }                    
                 ]
             },
             "/api/getJob": {
@@ -261,7 +263,7 @@
                         "type": "HttpAction",
                         "properties": {
                             "requestMethod": "GET",
-                            "url": "##JAVA_LAMBDA_URL##/orders/random"
+                            "url": "http://job-listing-services:8080/api/getJob"
                         }
                     },
                     {
