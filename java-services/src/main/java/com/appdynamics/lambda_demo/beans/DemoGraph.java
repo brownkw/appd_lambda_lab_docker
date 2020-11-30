@@ -28,28 +28,33 @@ public final class DemoGraph implements ApplicationRunner {
     private String graph_path;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {        
+    public void run(ApplicationArguments args) throws Exception {
         Gson gson = new Gson();
-        String json = readGraphFile();   
-        
+        String json = readGraphFile();
+
         String tier_name = "core-services";
-        if (System.getenv("APPDYNAMICS_AGENT_TIER_NAME") != null) {
-            tier_name = System.getenv("APPDYNAMICS_AGENT_TIER_NAME");
+        if (System.getenv("GRAPH_TIER_NAME") != null) {
+            tier_name = System.getenv("GRAPH_TIER_NAME");
+        } else {
+            if (System.getenv("APPDYNAMICS_AGENT_TIER_NAME") != null) {
+                tier_name = System.getenv("APPDYNAMICS_AGENT_TIER_NAME");
+            }
         }
 
-        Map<String, Object> fullGraph = gson.fromJson(json, new TypeToken<Map<String, Object>>() {}.getType());   
+        Map<String, Object> fullGraph = gson.fromJson(json, new TypeToken<Map<String, Object>>() {}.getType());
         Map<String, Object> tierGraph = gson.fromJson(gson.toJson(fullGraph.get(tier_name)), new TypeToken<Map<String, Object>>() {}.getType());
         DemoGraph.graph = gson.fromJson(gson.toJson(tierGraph.get("paths")), new TypeToken<Map<String, Object>>() {}.getType());
         DemoGraph.graph.forEach((x, y) -> logger.info("Path: " + x + " , Data : " + gson.toJson(y)));
-    }    
+    }
 
     private String readGraphFile() {
         String retval = "";
-        try {                        
+        try {
 
             logger.info("Reading graph from " + graph_path);
 
-            // File f = new File(DemoGraph.class.getClassLoader().getResource(graph_path).getFile());            
+            // File f = new
+            // File(DemoGraph.class.getClassLoader().getResource(graph_path).getFile());
             FileInputStream fis = new FileInputStream(graph_path);
             BufferedReader br = new BufferedReader(new InputStreamReader(fis));
             StringBuilder sb = new StringBuilder();
@@ -60,7 +65,7 @@ public final class DemoGraph implements ApplicationRunner {
             }
             br.close();
             retval = sb.toString();
-            
+
         } catch (IOException e) {
             logger.error("IOException", e);
         } catch (Exception e2) {

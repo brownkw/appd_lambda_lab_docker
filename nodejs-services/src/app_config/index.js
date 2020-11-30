@@ -7,8 +7,13 @@ class AppConfig {
         this.logger = new Logger().getInstance();
         var graph_file_path = process.env.GRAPH_FILE;        
         var tier_name = "web-api";
-        if (process.env.APPDYNAMICS_AGENT_TIER_NAME) {
-            tier_name = process.env.APPDYNAMICS_AGENT_TIER_NAME;
+        if (process.env.GRAPH_TIER_NAME) {
+            tier_name = process.env.GRAPH_TIER_NAME;
+        }
+        else {
+            if (process.env.APPDYNAMICS_AGENT_TIER_NAME) {
+               tier_name = process.env.APPDYNAMICS_AGENT_TIER_NAME;
+            }
         }
 
         var graph_json = JSON.parse(fs.readFileSync(graph_file_path));        
