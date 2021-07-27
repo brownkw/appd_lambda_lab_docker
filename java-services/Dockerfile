@@ -17,4 +17,6 @@ COPY startup.sh /
 RUN chmod +x /startup.sh
 COPY --from=MAVEN_TOOL_CHAIN /tmp/target/lambda_demo-1.0.0.jar /
 
+EXPOSE 8080
+
 ENTRYPOINT [ "/startup.sh" ]

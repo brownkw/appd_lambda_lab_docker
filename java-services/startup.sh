@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+eval $(printenv | sed -n "s/^\([^=]\+\)=\(.*\)$/export \1=\2/p" | sed 's/"/\\\"/g' | sed '/=/s//="/' | sed 's/$/"/' >> /etc/profile)
+
 if [ -z "$GRAPH_FILE" ]; then
     GRAPH_FILE=/graph.json
 fi
